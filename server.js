@@ -4,14 +4,27 @@ const http = require('http');
 console.log('start');
 
 http.createServer((request, response) => {
-    // response.statusCode(200);
-    // response.setHeader('Content-Type', 'text/plain');
+    if(request.url !== '/favicon.ico') {     
+    // console.log(request.url);
+    // console.log(request.method);
+    // console.log(request.headers);
+    // console.log(request.headers.host);
 
-    console.log('query');
 
-    //response.writeHead(200, {'Content-Type': 'text/plain'});
-    //response.writeHead(200, {'Content-Type': 'text/html'});
-    response.writeHead(200, {'Content-Type': 'text/json', 'X-Powered-By': 'myHeader'});
-    response.write('<h1>Hello World</h1>');
+    response.setHeader( 'Content-Type', 'text/html');
+    let statusCode = 200;
+    if (request.url === '/index') {
+        response.write('<h1>Hello World</h1>');
+    } else if (request.url === '/about') {
+        response.write('<h1>About</h1>');
+    } else if (request.url === '/contacts') {
+        response.write('<h1>Contacts</h1>');
+    } else {
+        statusCode = 404;
+        response.write('<h1>Page not Found 404</h1>');
+    }
+   
+    response.statusCode = statusCode
     response.end();
+}
 }).listen(8888);
